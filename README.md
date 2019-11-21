@@ -7,15 +7,17 @@ I used golang to create a simple application exposing an HTTP API with 2 endpoin
   -  (/) Endpoint 1: Json payload response
   -  (/health) Endpoint 2: used for healthcheck
 
-The application will run/listen on port: 8080
+The application will run/listen on port: 8080, the application can be found inside /src folder.
 
 ### 2. Containerization.
 
-A multi stage Dockerfile, divided in two, the first part include the building steps and the second part the final stage with the minimal size.
+A multi stage Dockerfile was created, the document is divided in two, the first part include the building steps and the second part the final stage with the minimal size base image. Multi-stage builds are a new feature requiring Docker 17.05 or higher on the daemon and client. Multistage builds are useful to anyone who has struggled to optimize Dockerfiles while keeping them easy to read and maintain.
 
 ### 3. Infrastructure. (AWS)
 
 For simplicity I decided to use cloudformation for the IaC. It can also be done with other tool like Ansible or Terraform, but this implies more setup time, for the terraform and Ansible users policies and I prefer to dedicate more time to deeply explain the 4 points needed for the task.
+
+Later in the document you will see a real IaC implementation for the infra, using codepipeline.
 
 ####   - VPC.
 
@@ -44,4 +46,20 @@ After I specify a target group in a rule for a listener, the load balancer conti
 As output I added the Loadbalancer Targetgroup, the Security Group created and the Url where the service is going to be ready.
 
 ####   - ECS Cluster.
+
+An Amazon ECS cluster is a logical grouping of tasks or services. If you are running tasks or services that use the EC2 launch type, a cluster is also a grouping of container instances. 
+
+The Amazon ECS–optimized Amazon Machine Image (AMI) comes prepackaged with the Amazon Elastic Container Service (ECS) container agent, Docker, and the ecs-init service. When updates to these components are released, try to integrate them as quickly as possible. Doing so helps you maintain a safe, secure, and reliable environment for running your containers.
+
+Each release of the ECS–optimized AMI includes bug fixes and feature updates. AWS recommends refreshing your container instance fleet with the latest AMI whenever possible, rather than trying to patch instances in-place. Periodical replacement of your ECS instances aligns with the immutable infrastructure paradigm, which is less prone to human error. It’s also less susceptible to configuration drift because infrastructure is managed through code.
+
+I created the ECS role and the Security Group for the ECS Cluster, Allowing access for the Loadbalancer Security Group, There is also an autoscaling group definition based on the CPU resources consumption to scale up and down. 
+
+A launch configuration is created as an instance configuration template that an Auto Scaling group uses to launch our EC2 instances during the scaling. I specified the needed information for the instances. Including the ID of the Amazon Machine Image (AMI), the instance type, a key pair for future SSH access, the security groups, and a block device mapping.
+
+With a simple and step scaling policies in the file, I choose scaling metrics and threshold values for the CloudWatch alarms that trigger the scaling process based on CPU usage. I also define how the Auto Scaling group should be scaled when a threshold is in breach for the specified number of evaluation periods, 2 evaluation periods, with 5 minutes.
+
+As output of the yaml file I added The cluster name from the cluster generated.
+
+####   - Service.
 
