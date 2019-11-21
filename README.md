@@ -87,5 +87,7 @@ Besides the ECR and the service a task definition is needed, A task definition i
  
 I want the task placement strategy to be spreaded into all the instances. Thats why I use the spread placement strategy. the Placed tasks are evenly based on the specified value.
 
-#### - Application Codepipeline
+### 4. Application Codepipeline.
+
+Defined also as Infrastructure, the pipeline specify 3 stages:
 
