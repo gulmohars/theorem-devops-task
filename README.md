@@ -63,3 +63,29 @@ As output of the yaml file I added The cluster name from the cluster generated.
 
 ####   - Service.
 
+The service resource creates an Amazon Elastic Container Service (Amazon ECS) service that runs and maintains the requested number of tasks and associated load balancers. Amazon ECS allows you to run and maintain a specified number of instances of a task definition simultaneously in an Amazon ECS cluster.  This is called a service. 
+
+I created a ECR Repository in this yaml file, an Amazon Elastic Container Registry (Amazon ECR) provides API operations to create, monitor, and delete image repositories and set permissions that control who can access them. 
+
+Besides the ECR and the service a task definition is needed, A task definition is required to run Docker containers in Amazon ECS. Some of the parameters you can specify in a task definition include:
+
+ - The Docker image to use with each container
+
+ - How much CPU and memory to use with each task or each container within a task
+
+ - The launch type to use, which determines the infrastructure on which the tasks are hosted
+
+ - The Docker networking mode to use for the containers in the task
+
+ - The logging configuration to use for the tasks
+
+ - Whether the task should continue to run if the container finishes or fails
+
+ - The command the container should run when it is started
+
+ - The IAM role that the tasks should use
+ 
+I want the task placement strategy to be spreaded into all the instances. Thats why I use the spread placement strategy. the Placed tasks are evenly based on the specified value.
+
+#### - Application Codepipeline
+
