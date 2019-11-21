@@ -103,5 +103,6 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
 ### Special Considerations:
 1.- During the cloudformation launch, please be careful with the parameter KeyPairName, this onespecify the name of a public key and it needs to be present in your AWS account.
 
-2.- To demonstrate the use of SSM parameters for secrets variables there is a parameter called GitHubToken, this one keep the value for the Github Token: XXXXXXXXX this value needs to be set before the stack creation, you can use the CLI command https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html or using your aws web console, System Manager -> Parameter Store -> Create Parameter.
+2.- To demonstrate the use of SSM parameters for secrets variables there is a parameter called GitHubToken, this one keep the value for the Github Token: XXXXXXXXX this value needs to be set before the stack creation, you can use the CLI command https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html or using your aws web console, System Manager -> Parameter Store -> Create Parameter. (Please ask me on slack about the Github Token Value.)
 
+3.- The Launch Stack Button in the Infrastruacture section, will open the AWS Cloudformation service with the Main Launcher and default values already loaded. This was tested on us-east-1 region.
