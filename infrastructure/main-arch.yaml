@@ -49,8 +49,8 @@ Parameters:
 
   TaskDefDesiredCount:
     Type: Number
-    Description: How many Task Def are going to run in one EC2 instance. At the beginning will be cero, until the app is loaded.
-    Default: 0
+    Description: How many Task Def are going to run in one EC2 instance. At the beginning will start with apache, until the app is loaded from the codepipeline.
+    Default: 2
 
   InstanceType:
     Type: String
@@ -91,7 +91,7 @@ Parameters:
 
   ExposedContainerPort:
     Type: Number
-    Default: 8080
+    Default: 80
 
   LBHealthCheckProtocol:
     Type: String

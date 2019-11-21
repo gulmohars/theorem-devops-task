@@ -18,7 +18,7 @@ Parameters:
 
   ExposedContainerPort: 
     Type: Number
-    Default: 8080
+    Default: 80
 
   ContainerBaseMemory:
     Type: Number
@@ -97,7 +97,8 @@ Resources:
       Family: !Sub ${Name}-app
       ContainerDefinitions:
         - Name: !Ref ContainerNameApp
-          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepoName}:${Tag}
+#          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepoName}:${Tag}
+          Image: httpd:2.4
           MemoryReservation: !Ref ContainerBaseMemory
           PortMappings:
             - ContainerPort: !Ref ExposedContainerPort

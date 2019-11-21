@@ -31,5 +31,5 @@ func health(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", getDevops)
 	http.HandleFunc("/health", health)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
