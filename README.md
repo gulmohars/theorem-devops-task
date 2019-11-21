@@ -9,3 +9,7 @@ I used golang to create a simple application exposing an HTTP API with 2 endpoin
 
 The application will run on port: 8080
 
+### Dockerfile.
+
+A multi stage Dockerfile, divided in two, the first part include the building steps and the second part the final stage with the minimal size.
+
