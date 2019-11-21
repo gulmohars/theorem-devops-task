@@ -1,7 +1,7 @@
 # Theorem-SRE-Task
-Theorem LLC - DevOps Prototyping Exercise
+Theorem LLC - DevOps Prototyping Exercise. This Document specify in 4 parts, all the resources needed to complete the Theorem-SRE-Task assigned:
 
-### Go Application.
+### 1. Application.
 
 I used golang to create a simple application exposing an HTTP API with 2 endpoints:
   -  (/) Endpoint 1: Json payload response
@@ -9,11 +9,11 @@ I used golang to create a simple application exposing an HTTP API with 2 endpoin
 
 The application will run/listen on port: 8080
 
-### Dockerfile.
+### 2. Containerization.
 
 A multi stage Dockerfile, divided in two, the first part include the building steps and the second part the final stage with the minimal size.
 
-### Infrastructure. (AWS)
+### 3. Infrastructure. (AWS)
 
 For simplicity I decided to use cloudformation for the IaC. It can also be done with other tool like Ansible or Terraform, but this implies more setup time, for the terraform and Ansible users policies and I prefer to dedicate more time to deeply explain the 4 points needed for the task.
 
