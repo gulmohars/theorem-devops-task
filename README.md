@@ -27,3 +27,9 @@ As outputs I setup, the Azs, the Subnets, the VPC Id and the VPC DefaultSG, all 
 
 ####   - Loadbalancer.
 
+In the loadbalancer yaml file I added the Loadbalancer definition, the healthcheck setup (path and httpcode expected) used during the Blue-green deployment, the Security Group and the cookie stickiness in case a cookies auth is needed.
+
+As output I added the Loadbalancer Targetgroup, the Security Group created and the Url where the service is going to be ready.
+
+####   - ECS Cluster.
+
