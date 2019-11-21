@@ -129,7 +129,7 @@ Resources:
   VPC:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/vpc.yaml"
+      TemplateURL: !Sub "https://theorem-tasks.s3.amazonaws.com/vpc.yaml"
       Parameters:
         Name: !Ref AWS::StackName
         VpcCIDR: !Ref VpcCIDR
@@ -142,7 +142,7 @@ Resources:
   LoadBalancer:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/load-balancer.yaml"
+      TemplateURL: !Sub "https://theorem-tasks.s3.amazonaws.com/load-balancer.yaml"
       Parameters:
         Name: !Ref AWS::StackName
         Subnets: !GetAtt VPC.Outputs.Subnets
@@ -159,7 +159,7 @@ Resources:
   Cluster:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/ecs-cluster.yaml"
+      TemplateURL: !Sub "https://theorem-tasks.s3.amazonaws.com/ecs-cluster.yaml"
       Parameters:
         SourceSecurityGroup: !GetAtt LoadBalancer.Outputs.SecurityGroup
         Subnets: !GetAtt VPC.Outputs.Subnets
@@ -176,7 +176,7 @@ Resources:
   Service:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/service.yaml"
+      TemplateURL: !Sub "https://theorem-tasks.s3.amazonaws.com/service.yaml"
       Parameters:
         Cluster: !GetAtt Cluster.Outputs.ClusterName
         TargetGroup: !GetAtt LoadBalancer.Outputs.TargetGroup
@@ -193,7 +193,7 @@ Resources:
 #  ArchDeploymentPipeline:
 #    Type: AWS::CloudFormation::Stack
 #    Properties:
-#      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/arch-deployment-pipeline.yaml"
+#      TemplateURL: !Sub "https://theorem-tasks.s3.amazonaws.com/arch-deployment-pipeline.yaml"
 #      Parameters:
 #        GitHubRepo: !Ref GitHubRepo
 #        RepoBranch: !Ref RepoBranch 
@@ -207,7 +207,7 @@ Resources:
   CodeDeploymentPipeline:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/code-deployment-pipeline.yaml"
+      TemplateURL: !Sub "https://theorem-tasks.s3.amazonaws.com/code-deployment-pipeline.yaml"
       Parameters:
         GitHubRepoCode: !Ref GitHubRepoCode
         RepoBranch: !Ref RepoBranch 
