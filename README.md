@@ -1,7 +1,7 @@
 # Theorem-SRE-Task
 Theorem LLC - DevOps Prototyping Exercise
 
-GO APPLICATION.
+## Go Application.
 
 I used golang to create a simple application exposing an HTTP API with 2 endpoints:
   -  (/) Endpoint 1: Json payload response
