@@ -13,7 +13,7 @@ The application will run/listen on port: 8080, the application can be found insi
 
 A multi stage Dockerfile was created, the document is divided in two, the first part include the building steps and the second part the final stage with the minimal size base image. Multi-stage builds are a new feature requiring Docker 17.05 or higher on the daemon and client. Multistage builds are useful to anyone who has struggled to optimize Dockerfiles while keeping them easy to read and maintain.
 
-### 3. Infrastructure. (AWS)
+### 3. Infrastructure. (AWS) ![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)
 
 For simplicity I decided to use cloudformation for the IaC. It can also be done with other tool like Ansible or Terraform, but this implies more setup time, for the terraform and Ansible users policies and I prefer to dedicate more time to deeply explain the 4 points needed for the task.
 
@@ -104,3 +104,4 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
 1.- During the cloudformation launch, please be careful with the parameter KeyPairName, this onespecify the name of a public key and it needs to be present in your AWS account.
 
 2.- To demonstrate the use of SSM parameters for secrets variables there is a parameter called GitHubToken, this one keep the value for the Github Token: XXXXXXXXX this value needs to be set before the stack creation, you can use the CLI command https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html or using your aws web console, System Manager -> Parameter Store -> Create Parameter.
+
