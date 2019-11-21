@@ -1,0 +1,228 @@
+Description: >
+  Theorem LLC Nested Stack Launcher templates and Deploy configuration based on Github, CodeBuild, ECS.
+
+
+Parameters:
+#  GitHubRepo:
+#    Type: String
+#    Description: GitHub Repository Name
+#    Default: elpasta
+  GitHubToken:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /infra/github/GitHubToken
+    Description: GitHub repository OAuth token
+
+  GitHubRepoCode:
+    Type: String
+    Description: GitHub Code Repository Name
+    Default: theorem-devops-task
+  
+  GitHubUser:
+    Type: String
+    Description: GitHub User
+    Default: elpasticho
+
+  RepoBranch:
+    Type: String
+    Description: GitHub Repository Branch
+    Default: master
+
+  VpcCIDR:
+    Type: String
+    Description: VPC CIDR block
+    Default: 10.20.0.0/16
+
+  Subnet1CIDR:
+    Type: String
+    Description: Subnet1 CIDR block
+    Default: 10.20.10.0/24
+
+  Subnet2CIDR:
+    Type: String
+    Description: Subnet2 CIDR block
+    Default: 10.20.20.0/24
+
+  ClusterSize:
+    Type: Number
+    Description: How many EC2 instance will run in the cluster
+    Default: 2
+
+  TaskDefDesiredCount:
+    Type: Number
+    Description: How many Task Def are going to run in one EC2 instance. At the beginning will be cero, until the app is loaded.
+    Default: 0
+
+  InstanceType:
+    Type: String
+    Description: Instance type for the EC2 cluster instances
+    Default: t2.small
+
+  AutoScalingMaxSize:
+    Type: Number
+    Description: AutoScaling maximum amount of Ec2 Instances
+    Default: 10
+
+  KeyPairName:
+    Type: String
+    Description: KeyPairName - You need to have the key pair in your AWS accoun
+    Default: theorem-key-pair
+
+  SGIngressCidr: 
+    Type: String
+    Description: Security Group Ingress CiDR allowing all IPs
+    Default: "0.0.0.0/0"
+
+  SGIngressProtocol: 
+    Type: String
+    Default: "TCP"
+    Description: Security Group Ingress Protocol
+
+  SGIngressFromPort:
+    Type: Number
+    Default: 80
+
+  SGIngressToPort:
+    Type: Number
+    Default: 80
+
+  LBListenerTGPort:
+    Type: Number
+    Default: 80
+
+  ExposedContainerPort:
+    Type: Number
+    Default: 8080
+
+  LBHealthCheckProtocol:
+    Type: String
+    Default: HTTP
+
+  DestinationCidrBlock:
+    Type: String
+    Default: 0.0.0.0/0
+
+  ContainerNameApp:
+    Type: String
+    Default: theorem-app
+
+  ContainerBaseMemory:
+    Type: Number
+    Default: 512
+    Description: Container Base Memory Ram
+
+  Environment:
+    Type: String
+    Default: Production
+    Description: Label tag specifying the Application environment
+
+  AppOwner:
+    Type: String
+    Default: Alberto-Eduardo
+    Description: Label tag specifying the Application owner
+
+  ECRRepoName:
+    Type: String
+    Default: theorem-task
+    Description: Elastic Container Repository Name to be created
+
+Resources:
+  VPC:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/vpc.yaml"
+      Parameters:
+        Name: !Ref AWS::StackName
+        VpcCIDR: !Ref VpcCIDR
+        Subnet1CIDR: !Ref Subnet1CIDR
+        Subnet2CIDR: !Ref Subnet2CIDR
+        DestinationCidrBlock: !Ref DestinationCidrBlock
+        AppOwner: !Ref AppOwner
+        Environment: !Ref Environment
+
+  LoadBalancer:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/load-balancer.yaml"
+      Parameters:
+        Name: !Ref AWS::StackName
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+        SGIngressCidr: !Ref SGIngressCidr
+        SGIngressProtocol: !Ref SGIngressProtocol
+        SGIngressFromPort: !Ref SGIngressFromPort
+        SGIngressToPort: !Ref SGIngressToPort
+        LBListenerTGPort: !Ref LBListenerTGPort
+        LBHealthCheckProtocol: !Ref LBHealthCheckProtocol
+        AppOwner: !Ref AppOwner
+        Environment: !Ref Environment
+
+  Cluster:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/ecs-cluster.yaml"
+      Parameters:
+        SourceSecurityGroup: !GetAtt LoadBalancer.Outputs.SecurityGroup
+        Subnets: !GetAtt VPC.Outputs.Subnets
+        VpcId: !GetAtt VPC.Outputs.VpcId
+        VpcDefaultSG: !GetAtt VPC.Outputs.VpcDefaultSG
+        ClusterSize: !Ref ClusterSize
+        InstanceType: !Ref InstanceType
+        AutoScalingMaxSize: !Ref AutoScalingMaxSize
+        KeyPairName: !Ref KeyPairName
+        Name: !Ref AWS::StackName
+        AppOwner: !Ref AppOwner
+        Environment: !Ref Environment
+
+  Service:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/service.yaml"
+      Parameters:
+        Cluster: !GetAtt Cluster.Outputs.ClusterName
+        TargetGroup: !GetAtt LoadBalancer.Outputs.TargetGroup
+        ContainerNameApp: !Ref ContainerNameApp
+        TaskDefDesiredCount: !Ref TaskDefDesiredCount
+        ExposedContainerPort: !Ref ExposedContainerPort
+        ContainerBaseMemory: !Ref ContainerBaseMemory
+        InstanceType: !Ref InstanceType
+        Name: !Ref AWS::StackName
+        AppOwner: !Ref AppOwner
+        Environment: !Ref Environment
+        ECRRepoName: !Ref ECRRepoName
+
+#  ArchDeploymentPipeline:
+#    Type: AWS::CloudFormation::Stack
+#    Properties:
+#      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/arch-deployment-pipeline.yaml"
+#      Parameters:
+#        GitHubRepo: !Ref GitHubRepo
+#        RepoBranch: !Ref RepoBranch 
+#        Name: !Ref AWS::StackName
+#        TemplateBucketName: !Ref TemplateBucketName
+#        GitHubUser: !Ref GitHubUser
+#        GitHubToken:
+#          Fn::Sub: ${GitHubTokenDecrypt.Plaintext}
+#        NameProd: !Ref NameProd
+
+  CodeDeploymentPipeline:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://theorem-task.s3.amazonaws.com/code-deployment-pipeline.yaml"
+      Parameters:
+        GitHubRepoCode: !Ref GitHubRepoCode
+        RepoBranch: !Ref RepoBranch 
+        Name: !Ref AWS::StackName
+        GitHubUser: !Ref GitHubUser
+        GitHubToken: !Ref GitHubToken
+        AppOwner: !Ref AppOwner
+        Environment: !Ref Environment
+        ClusterName: !GetAtt Cluster.Outputs.ClusterName
+        ServiceName: !GetAtt Service.Outputs.ServiceName
+        ECRRepoName: !Ref ECRRepoName
+
+
+
+Outputs:
+  ServiceUrl:
+    Description: Backend URL ready to use.
+    Value: !GetAtt LoadBalancer.Outputs.ServiceUrl
