@@ -1,4 +1,4 @@
-# theorem-devops-task
+# Theorem-SRE-Task
 Theorem LLC - DevOps Prototyping Exercise
 
 GO APPLICATION.
