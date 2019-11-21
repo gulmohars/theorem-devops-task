@@ -91,3 +91,16 @@ I want the task placement strategy to be spreaded into all the instances. Thats 
 
 Defined also as Infrastructure, the pipeline specify 3 stages:
 
+- Source: The codepipeline will start with a change everytime a change is submited to the Mater Branch in the Github Repository
+
+- Build: A codebuild project is created, this will build the Docker image and push it to the ECR repository.
+
+- Deploy: Takes the images from the ECR and using the Loadbalancer Health check is able to Deploy using a Blue Green Deployment. Once the new version is ready and response with a 200 code to the LoadBalancer this will be the actual version .deployed and will delete the old version.
+
+
+
+
+### Special Considerations:
+1.- During the cloudformation launch, please be careful with the parameter KeyPairName, this onespecify the name of a public key and it needs to be present in your AWS account.
+
+2.- To demonstrate the use of SSM parameters for secrets variables there is a parameter called GitHubToken, this one keep the value for the Github Token: df2550d18554c8010fed3849eb6ab20f6597435e this value needs to be set before the stack creation, you can use the CLI command https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html or using your aws web console, System Manager -> Parameter Store -> Create Parameter.
