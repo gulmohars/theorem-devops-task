@@ -17,7 +17,7 @@ A multi stage Dockerfile was created, the document is divided in two, the first 
 
 For simplicity I decided to use cloudformation for the IaC. It can also be done with other tool like Ansible or Terraform, but this implies more setup time, for the terraform and Ansible users policies and I prefer to dedicate more time to deeply explain the 4 points needed for the task.
 
-Later in the document you will see a real IaC implementation for the infra, using codepipeline.
+Later in the document you will see a real IaC CI/CD implementation for the infra and the application code, using codepipeline.
 
 ####   - VPC.
 
