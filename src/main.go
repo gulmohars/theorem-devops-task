@@ -12,7 +12,7 @@ type Devops struct {
 }
 
 func getDevops(w http.ResponseWriter, r *http.Request) {
-	answer := Devops{"Alberto", []string{"AWS", "Kubernetes"}}
+	answer := Devops{"Alberto Eduardo", []string{"AWS", "Kubernetes"}}
 
 	js, err := json.Marshal(answer)
 	if err != nil {
