@@ -100,7 +100,7 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
 
 
 
-### Special Considerations:
+### 5. Special Considerations:
 1.- During the cloudformation launch, please be careful with the parameter KeyPairName, this one specify the name of a public key and it needs to be present in your AWS account.
 
 2.- To demonstrate the use of SSM parameters for secrets variables there is a parameter called /infra/github/GitHubToken, this one keep the value for the Github Token: XXXXXXXXX this value needs to be set before the stack creation, you can use the CLI command https://docs.aws.amazon.com/cli/latest/reference/ssm/put-parameter.html or using your aws web console, System Manager -> Parameter Store -> Create Parameter. https://console.aws.amazon.com/systems-manager/parameters?region=us-east-1 (Please ask me on slack about the Github Token Value.)
@@ -124,6 +124,6 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
   d)The application must be able to autoscale. It implements scalability based on resources consumption (CPU) and cloudwatch alarms. Also implements High Avilability deploying to multiple AWS Availability zones.
 
 
-### Architecture Diagram
+### 6. Architecture Diagram
 
 ![Task Architecture Diagram](TheoremTasksArch.png)
