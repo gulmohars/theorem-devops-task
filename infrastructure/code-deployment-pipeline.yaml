@@ -148,7 +148,7 @@ Resources:
       Environment:
         Type: "LINUX_CONTAINER"
         ComputeType: BUILD_GENERAL1_MEDIUM
-        Image: aws/codebuild/docker:1.12.1
+        Image: aws/codebuild/docker:18.09.0
         EnvironmentVariables:
           - Name: AWS_DEFAULT_REGION
             Value: !Ref AWS::Region
