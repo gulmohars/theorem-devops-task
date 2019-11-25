@@ -122,3 +122,8 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
   c)It must be deployed on AWS, Azure, or GCP. The resources you create must originate from code. Its deploy to AWS and the IaC was made with Cloudformation yaml. Following the Launch Stack button will create all the resources with default values.
   
   d)The application must be able to autoscale. It implements scalability based on resources consumption (CPU) and cloudwatch alarms. Also implements High Avilability deploying to multiple AWS Availability zones.
+
+
+### Architecture Diagram
+
+![image](https://imgur.com/a/6Tdi7zv)
