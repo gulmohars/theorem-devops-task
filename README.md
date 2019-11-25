@@ -114,7 +114,11 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
 6.- The image used by the Codebuild is the Docker:18.09.0 is the one supporintg multi phases Dockerfile.
 
 7.- Regarding the requirements:
+
   a)It must run as a container.: It use Docker as container and ECS as a Container Orchestrator.
+  
   b)It must have an automated deployment strategy. It implements a Blue Green Deployment using a Codepipeine and Github hook with the master Branch.
+  
   c)It must be deployed on AWS, Azure, or GCP. The resources you create must originate from code. Its deploy to AWS and the IaC was made with Cloudformation yaml. Following the Launch Stack button will create all the resources with default values.
+  
   d)The application must be able to autoscale. It implements scalability based on resources consumption (CPU) and cloudwatch alarms. Also implements High Avilability deploying to multiple AWS Availability zones.
