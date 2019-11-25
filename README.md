@@ -126,4 +126,4 @@ Defined also as Infrastructure, the pipeline specify 3 stages:
 
 ### Architecture Diagram
 
-![image](https://imgur.com/a/6Tdi7zv)
+![Task Architecture Diagram](https://imgur.com/GhGoAbG)
